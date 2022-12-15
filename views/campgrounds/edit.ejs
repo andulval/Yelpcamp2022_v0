@@ -1,0 +1,105 @@
+<% layout('layouts/boilerplate.ejs') %>
+
+
+    <div class="container d-flex justify-content-center align-items-center mb-5">
+        <div class="row">
+            <div class="col-8 offset-2">
+                <div class="card shadow">
+                    <img class="card-img-top"
+                        src="https://images.unsplash.com/photo-1565257074896-83694ab78bb6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                        alt="camp example img">
+                    <div class="card-body">
+                        <h5 class="mb-3"><strong>Edit campground</strong> </h5>
+                        <form action="/campgrounds/<%= campground._id %>/?_method=PUT" method="POST" novalidate
+                            class="validated-form" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label class="form-label" for="title">Title</label>
+                                <input class="form-control" type="text" id="title" name="campground[title]"
+                                    placeholder="Catchy title" value="<%= campground.title %>" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="description">Description</label>
+                                <textarea class="form-control" id="description" name="campground[description]"
+                                    placeholder="A few words about the campground..."
+                                    required><%= campground.description %></textarea>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="input-group">
+                                        <label class="form-label" for="price">Price</label>
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text" id="price-label">$</span>
+                                            <input class="form-control" type="number" step=".5" id="price"
+                                                name="campground[price]" aria-describedby="price-label"
+                                                value="<%= campground.price %>" required>
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-8">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="location">Location</label>
+                                        <input class="form-control" type="text" id="location"
+                                            name="campground[location]" placeholder="City, State"
+                                            value="<%= campground.location %>" required>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="mb-3 custom-file">
+                                    <label class="form-label" for="imageForm">Upload additional image(s):</label>
+                                    <input class="form-control" type="file" name="image" id="imageForm" multiple>
+                                    <p class="mt-1 custom-file-label"></p>
+                                </div>
+
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <% campground.images.forEach((img, i)=> { %>
+
+                                    <img src="<%=img.thumbnail%>" class="img-thumbnail" alt="camp image">
+                                    <div class="form-check-inline">
+                                        <input class="" type="checkbox" name="deleteImages[]" id="image-<%=i%>"
+                                            value="<%=img.filename%>">
+                                        <Label for="image-<%=i%>">delete image</Label>
+                                    </div>
+
+                                    <% }) %>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="d-grid gap-2 mt-2">
+                                        <a class="btn btn-warning"
+                                            href="/campgrounds/<%= campground._id %>"><strong>back</strong></a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="d-grid gap-2 mt-2">
+                                        <button type="submit" class="btn btn-info"><strong>Update</strong> </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
