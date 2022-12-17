@@ -133,11 +133,12 @@ app.use("/campgrounds/:id/reviews", reviewsRoutes);
 app.use("/", userRoutes);
 
 mongoose
-  .connect(dbUrl, {//dbUrl //"mongodb://127.0.0.1:27017/yelp-camp" 
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false
+  .connect(dbUrl, {//dbUrl //"mongodb://127.0.0.1:27017/yelp-camp"
+    //useNewUrlParser, useUnifiedTopology, useFindAndModify, and useCreateIndex are no longer supported options. Mongoose 6 always behaves as if useNewUrlParser, useUnifiedTopology, and useCreateIndex are true, and useFindAndModify is false. Please remove these options from your code.
+    // useNewUrlParser: true, From the Mongoose 6.0 docs:
+    // useUnifiedTopology: true,
+    // useCreateIndex: true,
+    // useFindAndModify: false
   })
   .then(() => {
     console.log("MONGO connection!");
