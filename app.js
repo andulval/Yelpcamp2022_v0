@@ -1,3 +1,5 @@
+//USers in mongo Atlas: // user Toni, Kel
+
 if (process.env.NODE_ENV !== "production") {
   //when coding we are in development/production mode so take variable from .env file
   require("dotenv").config();
@@ -33,7 +35,7 @@ app.engine("ejs", ejsMate); //aby express uzył tego silnika zamiast defaultoweg
 app.set("view engine", "ejs"); //ze mamy templatke html'ów w rozwinieciu EJS a nie innym z możliwych
 app.set("views", path.join(__dirname, "views")); //ustawienie scieżki absolutnej - aby mozna bylow wywolac script nie bedac w foderze głównym, a applikacja znajdowała pliki
 app.use(mongoSanitize());
-app.use(helmet({crossOriginOpenerPolicy: false, contentSecurityPolicy: false, crossOriginEmbedderPolicy: false}));
+app.use(helmet());//{crossOriginOpenerPolicy: false, contentSecurityPolicy: false, crossOriginEmbedderPolicy: false}
 
 const scriptSrcUrls = [ //for helmet package - which locations are allowed 
     "https://stackpath.bootstrapcdn.com/",
@@ -119,11 +121,11 @@ passport.use(new LocalStrategy(User.authenticate())); //chcemy uzyc sesje na loc
 passport.serializeUser(User.serializeUser()); //jak store dane user'a w session
 passport.deserializeUser(User.deserializeUser()); //jak usuwac dane user w session
 
-app.use((req, res, next) => {
+app.use((req, res, next) => {//midlleware dla kazdego requesta
   res.locals.success = req.flash("success"); //w zmiennej res.locals przekazywane są automatycznie do kazdego 'view', wiec nie ma potrzeby przekazywania obiektu flash przy każdym wywołaniu res.render(..)
   res.locals.error = req.flash("error");
   res.locals.currentUser = req.user; //req.user from passport
-  res.locals.returnTo = req.session.returnTo;
+  // res.locals.returnTo = req.session.returnTo;
   // console.log(req.session.returnTo);
   next();
 });

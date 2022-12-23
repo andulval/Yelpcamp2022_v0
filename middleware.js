@@ -58,3 +58,12 @@ module.exports.isAuthorOfReview = async (req, res, next) => {
   }
   next();
 };
+
+module.exports.checkReturnUrl = (req, res, next) => {
+  if (req.session.returnTo) {
+    res.locals.returnTo = req.session.returnTo;//add query to a loacal (variable beetwen middleware when are called) (campground id redirected to add a comment)
+  }
+  // console.log("checkReturnUrl session", req.session.returnTo);
+  // console.log("checkReturnUrl locals", res.locals.returnTo);
+  next();
+}

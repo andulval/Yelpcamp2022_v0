@@ -1,4 +1,3 @@
-const campground = require("../models/campground");
 const Campground = require("../models/campground");
 const { cloudinary } = require("../cloudinary");
 const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
@@ -27,11 +26,16 @@ module.exports.createCampground = async (req, res, next) => {
   const newCampground = new Campground(req.body.campground); //normalnie req.body jest puste, musi zostać zpasrsowane (połączone, wyrzucone jako obiekt i nam przekazane). A to robi u góry linijka "router.use(express.urlencoded({ extended: true }))"
   newCampground.geometry = geoData.body.features[0].geometry;
   newCampground.author = req.user._id;
-  // console.log("req.files is : ", req.files);
   newCampground.images = req.files.map((f) => ({
     filename: f.filename,
     url: f.path,
   }));
+  if (newCampground.images.length === 0) {// if no image for the campgroud - load default one
+    newCampground.images.push({
+      url: "https://res.cloudinary.com/ddlzbo6ut/image/upload/v1670359779/YelpCamp/seeds/camp_7_pgbyqz.jpg",
+      filename: "YelpCamp/seeds/camp_7_pgbyqz"
+    })
+  }
   // console.log("images is : ", newCampground);
   // console.log(f.filename, f.path);
   await newCampground.save();
@@ -68,7 +72,7 @@ module.exports.updateCampground = async (req, res) => {
     req.body.campground, //lub rzutowanie: {...req.body.campground}
     { new: true }
   ); // zeby zwrócił nowy zupdatowany obiekt a nie stary przed edycją
-  const newImgs = req.files.map((f) => ({
+  const newImgs = req.files.map((f) => ({//z package mamy w request'cie  zalaczone pliki, ktore wrzucone są na 
     filename: f.filename,
     url: f.path,
   }));
@@ -76,6 +80,7 @@ module.exports.updateCampground = async (req, res) => {
   await camp.save();
   console.log("found CAMP", camp);
   if (req.body.deleteImages) {
+    
     for (let filename of req.body.deleteImages) {
       //delete imagees from cloudinary
       await cloudinary.uploader.destroy(filename);
@@ -83,15 +88,26 @@ module.exports.updateCampground = async (req, res) => {
     await camp.updateOne({
       $pull: { images: { filename: { $in: req.body.deleteImages } } },
     });
+    // console.log("camp.images.length : ", camp.images.length);
     //PULL elements from IMAGES array, where values are equal to the ones from deleteIMAGES
     // console.log("after Delete", req.body);
+    const campUpdated = await Campground.findById(id);
+    if (campUpdated.images.length === 0) {// if no image for the campgroud - load default one
+      campUpdated.images.push({
+    url: "https://res.cloudinary.com/ddlzbo6ut/image/upload/v1670359779/YelpCamp/seeds/camp_7_pgbyqz.jpg",
+    filename: "YelpCamp/seeds/camp_7_pgbyqz"
+      })
+      await campUpdated.save();
+    }
   }
-  console.log("After CAMP", camp);
+  // console.log("After CAMP", camp);
   req.flash("success", "Successfully update a campground!");
   res.redirect(`/campgrounds/${req.params.id}`);
 };
 module.exports.deleteCampground = async (req, res) => {
+  
   const deletedCampground = await Campground.findByIdAndDelete(req.params.id);
+  // console.log("delete camp!",deletedCampground)
   req.flash("success", "Successfully deleted campground!");
   res.redirect("/campgrounds");
 };

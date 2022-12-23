@@ -24,11 +24,17 @@ module.exports.registerUser = async (req, res, next) => {
 };
 
 module.exports.renderLogin = (req, res) => {
+  if (req.query.returnCamp) {
+    req.session.returnTo = req.query.returnCamp;//add query to a session (campground id redirected to add a comment)
+  }
+  // console.log("renderLogin", req.session.returnTo);
   res.render("users/login");
 };
 
 module.exports.loginUser = (req, res) => {
-  const redirectUrl = res.locals.returnTo || "/campgrounds"; //bo returnTo moze byc puste - uzytkownik kliknie w login button, a nie redirected przez naszą logike w routach
+  // console.log("loginUser", res.locals.returnTo);
+  //res.locals.returnTo nie działa bo passport dziala teraz inaczej - updatuje session id gdy sie logujemy - a wiec resetuje nam zmienną lokalną
+  const redirectUrl = res.locals.returnTo || "/campgrounds"; //res.locals.returnTo || "/campgrounds"; //bo returnTo moze byc puste - uzytkownik kliknie w login button, a nie redirected przez naszą logike w routach
   delete req.session.returnTo; //zeby nie zostalo w sesji niepotrzebnie
   req.flash("success", "Log in successfully");
   res.redirect(redirectUrl);

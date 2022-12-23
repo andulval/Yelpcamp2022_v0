@@ -77,3 +77,24 @@ module.exports.basicImages = [
     filename: "YelpCamp/seeds/camp_3_rva769",
   },
 ]
+
+module.exports.defaultAuthors = [
+  "639dbb918a7fe1096f1db2e9",
+  "639dbd5f8a7fe1096f1db304",
+  "63a3735139ce1422c181ee5b",
+  "63a3739139ce1422c181f314"
+]
+
+module.exports.defaultComment = [
+{body: "Outstanding camp",
+rating: 5},
+  {
+    body:"Phenomenal views! :D",
+rating: 4  },
+  {
+    body:"Prestigious location" ,
+rating: 4},
+    { body:"very loud and crowded :(", rating:1},
+      { body:"I saw beeter ones!", rating:2 },
+  { body: "not bad!", rating: 3 }
+]

@@ -66,8 +66,14 @@
                                 <input class="form-control" type="file" name="image" id="imageForm" multiple>
                                 <p class="mt-1 custom-file-label"></p>
                             </div>
+                            <div class="loading">
+                                <div class="ball"></div>
+                                <div class="ball"></div>
+                                <div class="ball"></div>
+                            </div>
                             <div class="d-grid gap-2 mt-4">
-                                <button type="submit" class="btn btn-primary btn-block"><strong>Create new</strong>
+                                <button id="createCampBtn" type="submit"
+                                    class="btn btn-primary btn-block"><strong>Create new</strong>
                                 </button>
                             </div>
                         </form>
@@ -77,6 +83,8 @@
         </div>
     </div>
 
+
+    <script src="/javascripts/loadingIndicator.js"></script>
 
 
 

@@ -7,3 +7,61 @@
     width: 100%;
     height: 300px;
 }
+
+/* image carusel - same height */
+.imageCarousel {
+  width: auto;
+  height: 500px;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.showPageImage{
+  width: auto;
+  max-height: 350px;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+/* infinity scroll: */
+
+.loading {
+	opacity: 0;
+	display: flex;
+	position: fixed;
+	bottom: 65px;
+	left: 50%;
+	transform: translateX(-50%);
+	transition: opacity .3s ease-in;
+}
+
+.loading.show {
+	opacity: 1;
+}
+
+.ball {
+	background-color: #777;
+	border-radius: 50%;
+	margin: 5px;
+	height: 10px;
+	width: 10px;
+	animation: jump .5s ease-in infinite;
+}
+
+.ball:nth-of-type(2) {
+	animation-delay: 0.1s;
+}
+
+.ball:nth-of-type(3) {
+	animation-delay: 0.2s;
+}
+
+@keyframes jump {
+	0%, 100% {
+		transform: translateY(0);
+	}
+	
+	50% {
+		transform: translateY(-10px);
+	}
+}

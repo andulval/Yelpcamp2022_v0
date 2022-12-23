@@ -1,5 +1,6 @@
 mapboxgl.accessToken = mapToken;
 
+console.log("working mapbox!")
 
 const map = new mapboxgl.Map({
 container: 'cluster-map',
@@ -10,7 +11,7 @@ zoom: 3
 });
 
 map.addControl(new mapboxgl.NavigationControl());
-
+console.log(campgrounds);
 map.on('load', () => {
 // Add a new source from our GeoJSON data and
 // set the 'cluster' option to true. GL-JS will
@@ -18,7 +19,6 @@ map.on('load', () => {
 map.addSource('campgrounds', {
 type: 'geojson',
 // Point to GeoJSON data. This example visualizes all M1.0+ campgrounds
-// from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
 data: campgrounds,
 cluster: true,
 clusterMaxZoom: 14, // Max zoom to cluster points on
@@ -106,22 +106,25 @@ zoom: zoom
 // the location of the feature, with
 // description HTML from its properties.
 map.on('click', 'unclustered-point', (e) => {
-const coordinates = e.features[0].geometry.coordinates.slice();
-    const campTitle = e.features[0].properties.title;
-    const campLocation = e.features[0].properties.location;
-    const campLink = e.features[0].properties.link;
-    // console.log(e.features[0].properties);
-// Ensure that if the map is zoomed out such that
-// multiple copies of the feature are visible, the
-// popup appears over the copy being pointed to.
-while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-}
+        console.log(e.features[0]);
+        //console.dir(e);
+        const coordinates = e.features[0].geometry.coordinates.slice();
+        const campTitle = e.features[0].properties.title;
+        const campLocation = e.features[0].properties.location;
+        const campLink = e.features[0].properties.link;
+        const campImgThumbnail = e.features[0].properties.imgThumbnail; //e.features[0].images[0].url.thumbnail;
+        // Ensure that if the map is zoomed out such that
+        // multiple copies of the feature are visible, the
+        // popup appears over the copy being pointed to.
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
  
-new mapboxgl.Popup()
-.setLngLat(coordinates)
-.setHTML(
-`<strong><b>${campTitle}</b></strong><br>${campLocation}<br><a href="/campgrounds/${campLink}">show more</a>  `
+        new mapboxgl.Popup()
+            .setLngLat(coordinates)
+            .setHTML(
+                // `<p>${e.features[0].properties}</p>`
+                `<strong><b>${campTitle}</b></strong><br>${campLocation}<br><img src="${campImgThumbnail}" class="img-thumbnail" alt="camp image" crossorigin><br><a href="/campgrounds/${campLink}">show more</a>  `
 )
 .addTo(map);
 });

@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require("../models/user");
 const catchAsync = require("../utils/catchAsync");
 const passport = require("passport");
-const { isLoggedIn } = require("../middleware");
+const { isLoggedIn, checkReturnUrl } = require("../middleware");
 const users = require("../controllers/users");
 
 router
@@ -15,6 +15,7 @@ router
   .route("/login")
   .get(users.renderLogin)
   .post(
+    checkReturnUrl,
     passport.authenticate("local", {
       failureFlash: true,
       failureRedirect: "/login",

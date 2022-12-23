@@ -49,6 +49,7 @@ CampgroundSchema.virtual("properties").get(function () {
     title: this.title,
     location: this.location,
     link: this._id,
+    imgThumbnail: this.images[0].url,
   }
   return campData;
 });

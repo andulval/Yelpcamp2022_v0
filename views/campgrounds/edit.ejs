@@ -72,7 +72,7 @@
                             <div class="mb-3">
                                 <% campground.images.forEach((img, i)=> { %>
 
-                                    <img src="<%=img.thumbnail%>" class="img-thumbnail" alt="camp image">
+                                    <img src="<%=img.thumbnail%>" class="img-thumbnail" alt="camp image" crossorigin>
                                     <div class="form-check-inline">
                                         <input class="" type="checkbox" name="deleteImages[]" id="image-<%=i%>"
                                             value="<%=img.filename%>">
@@ -90,8 +90,11 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
+
                                     <div class="d-grid gap-2 mt-2">
-                                        <button type="submit" class="btn btn-info"><strong>Update</strong> </button>
+
+                                        <button id="updateCampBtn" type="submit"
+                                            class="btn btn-info"><strong>Update</strong> </button>
                                     </div>
                                 </div>
                             </div>
@@ -103,3 +106,10 @@
             </div>
         </div>
     </div>
+    <div class="loading">
+        <div class="ball"></div>
+        <div class="ball"></div>
+        <div class="ball"></div>
+    </div>
+
+    <script src="/javascripts/loadingIndicator.js"></script>
