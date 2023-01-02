@@ -51,3 +51,13 @@ module.exports.logoutUser = async (req, res, next) => {
     res.redirect("/campgrounds");
   });
 };
+
+module.exports.showUserCamps = async (req, res) => {
+  const { id } = req.params;
+  const loggedUser = await User.findById(id).populate("campgrounds");
+  if (!loggedUser) {
+    req.flash("error", "Cannot find that user!");
+    res.redirect("/campgrounds");
+  }
+  res.render("users/showUsersCamps.ejs", { loggedUser: loggedUser });
+};

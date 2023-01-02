@@ -9,6 +9,7 @@ const cities = require("./cities");
 const { descriptors, places, basicImages, defaultAuthors, defaultComment } = require("./seedHelpers"); //destructure
 const dbUrl = process.env.DB_URL|| "mongodb://127.0.0.1:27017/yelp-camp"; //process.env.DB_URL;//uzytkownik cluster0 z mongodb atlas
 const Review = require("../models/review");
+const User = require("../models/user");
 
 mongoose
   .connect(dbUrl, {
@@ -45,13 +46,14 @@ const reviewGenerator = async () => {
 const seedsDB = async () => {
   await Campground.deleteMany({}); //delete everything
   await Review.deleteMany({}); //delete everything
+  await User.updateMany({}, { $set: { "campgrounds": [] } }, { multi: true }); //delete every array called campgrounds within User collection
   // console.log("reviewsWrong:");
   // console.log((reviewGenerator(Math.floor(Math.random() * 3)+1)));
 
   const price = Math.floor(Math.random() * 30) + 10;
   for (let i = 0; i < 300; i++) {
     const random1000 = Math.floor(Math.random() * 1000);
-    
+    const campAuthor = sample(defaultAuthors);
     const newRandomCamp = new Campground({
       location: `${cities[random1000].city}, ${cities[random1000].state}`,
       title: `${sample(descriptors)} ${sample(places)}`,
@@ -76,12 +78,20 @@ const seedsDB = async () => {
       description:
         "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam dignissimos ut asperiores quos voluptatibus fuga rerum beatae cumque minus corrupti incidunt ipsum maxime quibusdam esse, mollitia soluta sed blanditiis laboriosam?",
       price, //shortcut, jesli maja taka samą nazwe -> price: price
-      author: sample(defaultAuthors), //, "639dbd5f8a7fe1096f1db304" "63825a24b040d5089b172ecd",
+      author: campAuthor, //, "639dbd5f8a7fe1096f1db304" "63825a24b040d5089b172ecd",
     });
+
+
+
     const reviewsQty = Math.floor(Math.random() * 3)+1;
     for (let i = 0; i < reviewsQty; i++) {
       newRandomCamp.reviews.push(await reviewGenerator());
     }
+
+    const loggedUser = await User.findById(campAuthor);
+    loggedUser.campgrounds.push(newRandomCamp);
+    // console.log(campAuthor);
+
     // console.log(reviewGenerator());
     // for (let i = 0; i < 1; i++) {
     //   const randomComment = sample(defaultComment);
@@ -95,6 +105,7 @@ const seedsDB = async () => {
     // }
     // console.log(newRandomCamp.populate("reviews"))
     await newRandomCamp.save();
+    await loggedUser.save();
   }
 };
 

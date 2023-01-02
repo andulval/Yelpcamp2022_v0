@@ -45,8 +45,8 @@ module.exports.places = [
 
 module.exports.basicImages = [
   {
-    url: "https://res.cloudinary.com/ddlzbo6ut/image/upload/v1670359779/YelpCamp/seeds/camp_7_pgbyqz.jpg",
-    filename: "YelpCamp/seeds/camp_7_pgbyqz",
+    url: "https://res.cloudinary.com/ddlzbo6ut/image/upload/v1672176325/YelpCamp/seeds/camp_7_cydred.jpg",
+    filename: "YelpCamp/seeds/camp_7_cydred",
   },
   {
     url: "https://res.cloudinary.com/ddlzbo6ut/image/upload/v1670359781/YelpCamp/seeds/camp_5_eoelgj.jpg",

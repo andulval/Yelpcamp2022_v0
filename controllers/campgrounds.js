@@ -3,7 +3,7 @@ const { cloudinary } = require("../cloudinary");
 const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
 const mapBoxToken = process.env.MAPBOX_TOKEN;
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
-
+const User = require('../models/user.js')
 module.exports.index = async (req, res) => {
   //basic page (all of them)
   const campgrounds = await Campground.find({});
@@ -38,7 +38,15 @@ module.exports.createCampground = async (req, res, next) => {
   }
   // console.log("images is : ", newCampground);
   // console.log(f.filename, f.path);
+  const campAuthor = await User.findById(req.user._id);
+     if (!campAuthor) {
+    req.flash("error", "Cannot find that user!");
+    res.redirect("/campgrounds");
+  }
+  console.log("found User:", campAuthor);
+  campAuthor.campgrounds.push(newCampground);
   await newCampground.save();
+  await campAuthor.save();
   req.flash("success", "Successfully made a new campground!");
   res.redirect(`/campgrounds/${newCampground._id}`); //campground._id z własnie zapisanego newCampground
 };
@@ -78,12 +86,14 @@ module.exports.updateCampground = async (req, res) => {
   }));
   camp.images.push(...newImgs); //dodaj nie cala tablice ale jej poszczegole elementy, bo dodanie tablicy w tablicy utworzyłoby niepoprawny obiekt..
   await camp.save();
-  console.log("found CAMP", camp);
+  // console.log("found CAMP", camp);
   if (req.body.deleteImages) {
     
     for (let filename of req.body.deleteImages) {
       //delete imagees from cloudinary
-      await cloudinary.uploader.destroy(filename);
+      if(filename !== 'YelpCamp/seeds/camp_7_cydred'){//default camop img
+        await cloudinary.uploader.destroy(filename);
+        }
     }
     await camp.updateOne({
       $pull: { images: { filename: { $in: req.body.deleteImages } } },
@@ -94,8 +104,8 @@ module.exports.updateCampground = async (req, res) => {
     const campUpdated = await Campground.findById(id);
     if (campUpdated.images.length === 0) {// if no image for the campgroud - load default one
       campUpdated.images.push({
-    url: "https://res.cloudinary.com/ddlzbo6ut/image/upload/v1670359779/YelpCamp/seeds/camp_7_pgbyqz.jpg",
-    filename: "YelpCamp/seeds/camp_7_pgbyqz"
+    url: "https://res.cloudinary.com/ddlzbo6ut/image/upload/v1672176325/YelpCamp/seeds/camp_7_cydred.jpg",
+    filename: "YelpCamp/seeds/camp_7_cydred"
       })
       await campUpdated.save();
     }

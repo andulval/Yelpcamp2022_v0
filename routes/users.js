@@ -25,4 +25,6 @@ router
 
 router.get("/logout", isLoggedIn, users.logoutUser);
 
+router.get("/:id/campgrounds", isLoggedIn, users.showUserCamps);
+
 module.exports = router;

@@ -121,7 +121,7 @@ passport.use(new LocalStrategy(User.authenticate())); //chcemy uzyc sesje na loc
 passport.serializeUser(User.serializeUser()); //jak store dane user'a w session
 passport.deserializeUser(User.deserializeUser()); //jak usuwac dane user w session
 
-app.use((req, res, next) => {//midlleware dla kazdego requesta
+app.use((req, res, next) => {//midlleware odpalane dla kazdego requesta
   res.locals.success = req.flash("success"); //w zmiennej res.locals przekazywane są automatycznie do kazdego 'view', wiec nie ma potrzeby przekazywania obiektu flash przy każdym wywołaniu res.render(..)
   res.locals.error = req.flash("error");
   res.locals.currentUser = req.user; //req.user from passport

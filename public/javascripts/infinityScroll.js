@@ -8,6 +8,8 @@ let countCampgrounds = 3; //to count wichch campground load now
 // getPost();
 // getPost();
 // getPost();
+const loadMoreBt = document.querySelector("#loadMoreBt");
+
 
 window.addEventListener('scroll', () => {
 	const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
@@ -20,6 +22,19 @@ window.addEventListener('scroll', () => {
 			showLoading();
 		}
 	}
+});
+
+loadMoreBt.addEventListener('click', () => {
+	for (let i = 0; i < 3; i++) {
+		if (allCampgrounds.length >= countCampgrounds) {
+		// show the loading animation
+		showLoading();
+		if (allCampgrounds.length === countCampgrounds) {
+			loadMoreBt.classList.add('none');
+		}
+	}
+	}
+	
 });
 
 function showLoading() {

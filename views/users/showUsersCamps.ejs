@@ -1,16 +1,11 @@
 <% layout('layouts/boilerplate.ejs') %>
 
-
-    <div class="shadow-lg rounded mb-3" id="cluster-map">
-
-    </div>
-
-
-
     <div class="container mb-5">
-        <h2 class="mt-4 mb-4">All campgrounds</h2>
-        <% for( let k=0; k<3; k++) { %>
-            <% const c=campgrounds[k]; %>
+        <h2 class="mt-4 mb-4">
+            <%= currentUser.username %>'s campgrounds (<%= currentUser.campgrounds.length %>)
+        </h2>
+        <% for( let k=0; k<loggedUser.campgrounds.length; k++) { %>
+            <% const c=loggedUser.campgrounds[k]; %>
                 <div class="card mb-5 shadow rounded">
                     <div class="row">
                         <div class="col-md-4 d-flex justify-content-center rounded">
@@ -47,25 +42,7 @@
 
 
                 <% } %>
-
-    </div>
-
-    <div class="d-flex justify-content-center mb-4">
-        <button id="loadMoreBt" class="btn btn-info"><b>Load more</b></button>
     </div>
 
 
-    <div class="loading">
-        <div class="ball"></div>
-        <div class="ball"></div>
-        <div class="ball"></div>
-    </div>
-
-    <script>
-        const mapToken = "<%- process.env.MAPBOX_TOKEN %>";
-        const campgrounds = { features: <%-JSON.stringify(campgrounds) %>};
-    </script>
-    <script src="/javascripts/clusterMap.js"></script>
-
-    <script src="/javascripts/infinityScroll.js"></script>
     <!-- <script src="/javascripts/infinityScroll.js"></script> -->
