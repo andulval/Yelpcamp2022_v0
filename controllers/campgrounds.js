@@ -32,8 +32,8 @@ module.exports.createCampground = async (req, res, next) => {
   }));
   if (newCampground.images.length === 0) {// if no image for the campgroud - load default one
     newCampground.images.push({
-      url: "https://res.cloudinary.com/ddlzbo6ut/image/upload/v1670359779/YelpCamp/seeds/camp_7_pgbyqz.jpg",
-      filename: "YelpCamp/seeds/camp_7_pgbyqz"
+      url: "https://res.cloudinary.com/ddlzbo6ut/image/upload/v1672176325/YelpCamp/seeds/camp_7_cydred.jpg",
+      filename: "YelpCamp/seeds/camp_7_cydred"
     })
   }
   // console.log("images is : ", newCampground);
