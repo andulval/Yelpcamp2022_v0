@@ -109,6 +109,7 @@ module.exports.updateCampground = async (req, res) => {
       })
       await campUpdated.save();
     }
+    await camp.save();
   }
   // console.log("After CAMP", camp);
   req.flash("success", "Successfully update a campground!");
@@ -118,6 +119,14 @@ module.exports.deleteCampground = async (req, res) => {
   
   const deletedCampground = await Campground.findByIdAndDelete(req.params.id);
   // console.log("delete camp!",deletedCampground)
+  const campUser = await User.findById(deletedCampground.author);
+  // console.log('campUser', campUser);
+  console.log('id CAMP', req.params.id);
+  await campUser.updateOne({ //delete id's of campgrounds saved in Users object
+    $pull: { campgrounds: req.params.id},
+  }); 
+  await campUser.save();
+  console.log('campUser after', campUser);
   req.flash("success", "Successfully deleted campground!");
   res.redirect("/campgrounds");
 };
