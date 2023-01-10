@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { cloudinary } = require("../cloudinary");
 const Schema = mongoose.Schema;
 const Review = require("./review");
+const {basicImages} = require('../seeds/seedHelpers.js')
 
 const ImageSchema = Schema({
   //tworzymy Schema dla Images tylko po to aby dodac virtuals ponizej - tylko na Schema jest taka mozliwosc
@@ -68,8 +69,19 @@ CampgroundSchema.post("findOneAndDelete", async function (doc) {
   }
   if (doc.images.length > 0) {
     //usun zdjecia z cloudinary - wszystkie przynalezne temu campground'owi
+    
+    //create array of filenames pulled from basicImages(array of objects)
+    //const array = someArray.map(x => x.data)
+    const defaultImgs = basicImages.map(x => x.filename); //Destructuring array of objects
+    // console.log('defaultImgs: ', defaultImgs)
+    // console.log('doc.images: ', doc.images)
     for (let img of doc.images) {
-      await cloudinary.uploader.destroy(img.filename);
+        //new array with img to delete without default ones:
+        
+            if(!defaultImgs.includes(img.filename)){//if default array of img obeject include image selected to delete then..
+              console.log('in campgroundsModel delete img from cloudinary: ', img.filename)
+              await cloudinary.uploader.destroy(img.filename); 
+          }  
     }
   }
 });

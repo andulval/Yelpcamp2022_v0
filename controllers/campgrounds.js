@@ -4,6 +4,9 @@ const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
 const mapBoxToken = process.env.MAPBOX_TOKEN;
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 const User = require('../models/user.js')
+const {basicImages} = require('../seeds/seedHelpers.js')
+
+
 module.exports.index = async (req, res) => {
   //basic page (all of them)
   const campgrounds = await Campground.find({});
@@ -32,8 +35,8 @@ module.exports.createCampground = async (req, res, next) => {
   }));
   if (newCampground.images.length === 0) {// if no image for the campgroud - load default one
     newCampground.images.push({
-      url: "https://res.cloudinary.com/ddlzbo6ut/image/upload/v1672176325/YelpCamp/seeds/camp_7_cydred.jpg",
-      filename: "YelpCamp/seeds/camp_7_cydred"
+      url: basicImages[0].url,
+      filename: basicImages[0].filename
     })
   }
   // console.log("images is : ", newCampground);
@@ -87,30 +90,46 @@ module.exports.updateCampground = async (req, res) => {
   camp.images.push(...newImgs); //dodaj nie cala tablice ale jej poszczegole elementy, bo dodanie tablicy w tablicy utworzyłoby niepoprawny obiekt..
   await camp.save();
   // console.log("found CAMP", camp);
+
+
+  // console.log('req.body.deleteImages', req.body.deleteImages)
   if (req.body.deleteImages) {
+    //create array of filenames pulled from basicImages(array of objects)
+    //const array = someArray.map(x => x.data)
     
-    for (let filename of req.body.deleteImages) {
-      //delete imagees from cloudinary
-      if(filename !== 'YelpCamp/seeds/camp_7_cydred'){//default camop img
-        await cloudinary.uploader.destroy(filename);
-        }
+    const defaultImgs = basicImages.map(x => x.filename); //Destructuring array of objects
+    // console.log('defaultImgs', defaultImgs)
+    //new array with img to delete without default ones:
+      const imgsTodelete = req.body.deleteImages.filter( (image) => { 
+        if(defaultImgs.includes(image)){//if default array of img obeject include image selected to delete then..
+          return false; 
+          } else{
+          return true;
+          }
+      }  
+    )
+    console.log('imgsTodelete', imgsTodelete)
+
+    if(imgsTodelete.length>0){ //if there is sth to delete
+      console.log('imgsTodelete DELETED:', imgsTodelete)
+      await cloudinary.uploader.destroy(imgsTodelete);//delete imagees from cloudinary
+      await camp.updateOne({
+        $pull: { images: { filename: { $in: imgsTodelete } } },
+      });
     }
-    await camp.updateOne({
-      $pull: { images: { filename: { $in: req.body.deleteImages } } },
-    });
+  }
+
+
+    
     // console.log("camp.images.length : ", camp.images.length);
     //PULL elements from IMAGES array, where values are equal to the ones from deleteIMAGES
     // console.log("after Delete", req.body);
     const campUpdated = await Campground.findById(id);
     if (campUpdated.images.length === 0) {// if no image for the campgroud - load default one
-      campUpdated.images.push({
-    url: "https://res.cloudinary.com/ddlzbo6ut/image/upload/v1672176325/YelpCamp/seeds/camp_7_cydred.jpg",
-    filename: "YelpCamp/seeds/camp_7_cydred"
-      })
+      campUpdated.images.push(basicImages[0]);
       await campUpdated.save();
     }
     await camp.save();
-  }
   // console.log("After CAMP", camp);
   req.flash("success", "Successfully update a campground!");
   res.redirect(`/campgrounds/${req.params.id}`);
@@ -121,12 +140,12 @@ module.exports.deleteCampground = async (req, res) => {
   // console.log("delete camp!",deletedCampground)
   const campUser = await User.findById(deletedCampground.author);
   // console.log('campUser', campUser);
-  console.log('id CAMP', req.params.id);
+  // console.log('id CAMP', req.params.id);
   await campUser.updateOne({ //delete id's of campgrounds saved in Users object
-    $pull: { campgrounds: req.params.id},
+    $pull: { campgrounds: req.params.id},// było zbyt głeboko dla: $pull: { campgrounds: {_id: req.params.id}},
   }); 
   await campUser.save();
-  console.log('campUser after', campUser);
+  // console.log('campUser after', campUser);
   req.flash("success", "Successfully deleted campground!");
   res.redirect("/campgrounds");
 };
