@@ -131,4 +131,4 @@ After your pull request is merged, you can delete your branch
 
 ## 📝 Project License
 
-This project is under the MIT license. See the [LICENSE](https://github.com/francianepovoa/crwn-clothing/blob/master/client/LICENSE) for more information.
+This project is under the MIT license.
