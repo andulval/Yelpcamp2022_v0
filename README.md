@@ -40,16 +40,19 @@ This project is being created using Node.js, Express, MongoDB, and Bootstrap. Pa
 
 ## 🖼️ Screenshots
 >HomePage
-![home](https://user-images.githubusercontent.com/51289274/113733448-1a3ac300-9718-11eb-9fc7-defb8d2cd9c1.png)
+![home](https://res.cloudinary.com/ddlzbo6ut/image/upload/v1684538052/github%20screenshots/yelpcamp_0_o7vgyv.png)
 
 >All Campgrounds
-![All campgrounds](https://user-images.githubusercontent.com/51289274/113733438-173fd280-9718-11eb-8a0d-8e13f1ab3d45.png)
+![All campgrounds](https://res.cloudinary.com/ddlzbo6ut/image/upload/v1684538043/github%20screenshots/yelpcamp_1_dvc1gw.png)
 
 ->Single Campground ShowPage
-![showPage](https://user-images.githubusercontent.com/51289274/113733465-1e66e080-9718-11eb-9ffe-8b047640942a.png)
+![showPage](https://res.cloudinary.com/ddlzbo6ut/image/upload/v1684538026/github%20screenshots/yelpcamp2_dkpmt2.png)
 
 ->Login & Register page
-![login,register](https://user-images.githubusercontent.com/51289274/113734300-d8f6e300-9718-11eb-801e-5cb4698a1560.png)
+
+![login](https://res.cloudinary.com/ddlzbo6ut/image/upload/v1684537992/github%20screenshots/yelpcamp3_n5mift.png)
+
+![register](https://res.cloudinary.com/ddlzbo6ut/image/upload/v1684537997/github%20screenshots/yelpcamp4_tddn3n.png)
 
 
 ## 💻 Getting started
