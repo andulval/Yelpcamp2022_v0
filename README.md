@@ -1,4 +1,4 @@
-# Yelpcamp2022
+# Yelpcamp
 [Link to the website](https://yelpcamp2022-v0.vercel.app/)
 
 ## 👨🏻‍💻 About the project
