@@ -2,8 +2,7 @@
 [Link to the website](https://yelpcamp2022-v0.vercel.app/)
 
 ## 👨🏻‍💻 About the project
-YelpCamp is a full-stack responsive website. Users can create and review campgrounds with geocoding. In order to review or create a campground, you must have an account. 
-The project is an extension of the web application made during web dev bootcamp course by Colt Steele on the Udemy platform. 
+YelpCamp is a full-stack responsive website. Users can create and review campgrounds with geocoding. In order to review or create a campground, you must have an account.  
 This project is being created using Node.js, Express, MongoDB, and Bootstrap. Passport.js is used to handle authentication.
 
 ## 🚀 Functionalities
@@ -136,3 +135,4 @@ After your pull request is merged, you can delete your branch
 ## 📝 Project License
 
 This project is under the MIT license.
+The project is an extension of the web application made during web dev bootcamp course by Colt Steele on the Udemy platform.
